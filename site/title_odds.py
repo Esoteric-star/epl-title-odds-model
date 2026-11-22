@@ -59,6 +59,10 @@ def symmetric_prior(counts, strength):
 def mason_title_odds(settled, gap_pts, gap_exact, n_remaining, strength=STRENGTH, sims=SIMS, seed=0):
     if n_remaining == 0:
         return float(gap_pts > 0 or (gap_pts == 0 and gap_exact > 0))
+    if gap_pts > 3 * n_remaining:
+        return 1.0
+    if gap_pts < -3 * n_remaining:
+        return 0.0
     counts = np.array([settled.count(c) for c in CATS])
     alpha = symmetric_prior(counts, strength) + counts
     rng = np.random.default_rng(seed)
